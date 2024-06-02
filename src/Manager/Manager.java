@@ -65,7 +65,7 @@ public class Manager {
         }
     }
 
-    public void shopping(ArrayList<Fruit> lf,
+     public void shopping(ArrayList<Fruit> lf,
             Hashtable<String, ArrayList<Order>> orderCustomer) {
         boolean productsAvailable = true;
 
@@ -152,15 +152,15 @@ public class Manager {
             if (fruit.getQuantity() != 0) {
                 System.out.printf("%-10d%-20s%-20s%-15.0f$\n", countItem++,
                         fruit.getFruitName(), fruit.getOrigin(), fruit.getPrice());
-            }
-            else if (fruit.getQuantity() == 0){
+            } else if (fruit.getQuantity() == 0) {
                 lf.remove(fruit.getFruitID());
             }
         }
     }
     //admin to check the code
 
-    public void displayListfruitAdmin(ArrayList<Fruit> lf) {
+    public void AddAvailableFruitToStore(ArrayList<Fruit> lf) {
+        System.out.print("List of available food: ");
         int countItem = 1;
         ArrayList<Fruit> itemsToRemove = new ArrayList<>(); // List of items to remove
         System.out.printf("%-15s%-10s%-20s%-20s%-15s\n", "ID", "Item", "Fruit name", "Origin", "Price");

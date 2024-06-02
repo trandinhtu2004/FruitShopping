@@ -25,7 +25,7 @@ public class Main {
                     manager.createFruit(lf);
                     break;
                 case 2:
-                    manager.displayListfruitAdmin(lf);
+                    manager.AddAvailableFruitToStore(lf);
                     break;
                 case 3:
                     manager.viewOrder(customerOrder);
