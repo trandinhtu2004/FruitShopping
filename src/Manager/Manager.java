@@ -22,7 +22,7 @@ public class Manager {
         String input = "Input your choice: ";
         String err = "Invalid choice!";
         System.out.println("1. Create Fruit.");
-        System.out.println("2. List fruits.");
+        System.out.println("2. Delete Fruit that quantity = 0");
         System.out.println("3. View Orders.");
         System.out.println("4. Shoping (for buyer).");
         System.out.println("5. Exit.");
@@ -116,9 +116,6 @@ public class Manager {
                 System.err.println("Invalid item. Please try again.");
                 continue;
             }
-            
-            
-
             int quantity = validation.checkInputIntLimit("Enter quantity: ",
                     1, fruit.getQuantity());
             //minor quantity of item.
@@ -159,17 +156,19 @@ public class Manager {
     }
     //admin to check the code
 
-    public void AddAvailableFruitToStore(ArrayList<Fruit> lf) {
+    public void DeleteOutOfFruit(ArrayList<Fruit> lf) {
         System.out.print("List of available food: ");
         int countItem = 1;
         ArrayList<Fruit> itemsToRemove = new ArrayList<>(); // List of items to remove
         System.out.printf("%-15s%-10s%-20s%-20s%-15s\n", "ID", "Item", "Fruit name", "Origin", "Price");
         for (Fruit fruit : lf) {
             if (fruit.getQuantity() == 0) {
+                System.out.printf("%-15s%-10d%-20s%-20s%-15.0f$\n",
+       fruit.getFruitID(), countItem++, fruit.getFruitName(),
+       fruit.getOrigin(), fruit.getPrice());
                 itemsToRemove.add(fruit); // Add item to remove list
                 continue; // Skip this item and continue loop
             }
-            System.out.printf("%-15s%-10d%-20s%-20s%-15.0f$\n", fruit.getFruitID(), countItem++, fruit.getFruitName(), fruit.getOrigin(), fruit.getPrice());
         }
         // Remove out-of-stock items from the main list
         lf.removeAll(itemsToRemove);
