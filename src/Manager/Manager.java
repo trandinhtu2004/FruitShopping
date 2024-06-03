@@ -74,6 +74,7 @@ public class Manager {
             System.err.println("Out of fruit!!!!");
             return; // Thoát khỏi phương thức và quay lại trang chủ
         }
+        //check if there are fruit that quantity > 0 so the shop can continue buying
         boolean outOfStockinCheck = true;
         for (Fruit fruit : lf) {
             if (fruit.getQuantity() > 0) {
@@ -88,7 +89,8 @@ public class Manager {
         }
         ArrayList<Order> lo = new ArrayList<>();
         while (true) {
-            displayListfruit(lf);
+            //check if store has fruits
+            CheckListFruit(lf);
             boolean outOfStock = true;
             //kiem tra xem fruit co out of stock
             for (Fruit fruit : lf) {
@@ -105,6 +107,7 @@ public class Manager {
                 System.err.println("Add successful!");
                 return;
             }
+            displayListfruit(lf);
             //end kiem tra xem fruit co out of stock
             int item = validation.checkInputInt("Get your Item on list: ");
             if (item == 0){
@@ -139,7 +142,20 @@ public class Manager {
         System.err.println("Add successful!");
 
     }
-
+     
+    // check if there are fruits in the shop
+    public String CheckListFruit(ArrayList<Fruit> lf){
+        int countItem = 1;
+        for (Fruit fruit : lf) {
+            //check shop have item or not 
+            if (fruit.getQuantity() != 0) {
+                return fruit.toString();
+            }
+        }
+        return null;
+        } 
+    
+    
     //display fruits in shop
     public void displayListfruit(ArrayList<Fruit> lf) {
         int countItem = 1;
@@ -149,15 +165,13 @@ public class Manager {
             if (fruit.getQuantity() != 0) {
                 System.out.printf("%-10d%-20s%-20s%-15.0f$\n", countItem++,
                         fruit.getFruitName(), fruit.getOrigin(), fruit.getPrice());
-            } else if (fruit.getQuantity() == 0) {
-                lf.remove(fruit.getFruitID());
             }
         }
     }
     //admin to check the code
 
     public void DeleteOutOfFruit(ArrayList<Fruit> lf) {
-        System.out.print("List of available food: ");
+        System.out.println("List of unavailable food: ");
         int countItem = 1;
         ArrayList<Fruit> itemsToRemove = new ArrayList<>(); // List of items to remove
         System.out.printf("%-15s%-10s%-20s%-20s%-15s\n", "ID", "Item", "Fruit name", "Origin", "Price");
@@ -172,6 +186,7 @@ public class Manager {
         }
         // Remove out-of-stock items from the main list
         lf.removeAll(itemsToRemove);
+        System.out.println("Remove successed!!");
     }
 
     public void displayListOrder(ArrayList<Order> lo) {

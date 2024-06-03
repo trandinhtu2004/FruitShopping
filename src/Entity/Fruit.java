@@ -65,5 +65,10 @@ public class Fruit {
     public void setOrigin(String origin) {
         this.origin = origin;
     }
+
+    @Override
+    public String toString() {
+        return "Fruit{" + "fruitID=" + fruitID + ", fruitName=" + fruitName + ", price=" + price + ", quantity=" + quantity + ", origin=" + origin + '}';
+    }
    
 }
