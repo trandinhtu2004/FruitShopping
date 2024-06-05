@@ -22,10 +22,9 @@ public class Manager {
         String input = "Input your choice: ";
         String err = "Invalid choice!";
         System.out.println("1. Create Fruit.");
-        System.out.println("2. Delete Fruit that quantity = 0");
-        System.out.println("3. View Orders.");
-        System.out.println("4. Shoping (for buyer).");
-        System.out.println("5. Exit.");
+        System.out.println("2. View Orders.");
+        System.out.println("3. Shoping (for buyer).");
+        System.out.println("4. Exit.");
         int choice = validation.checkInputIntLimit(input, 1, 5);
         return choice;
     }
@@ -68,13 +67,14 @@ public class Manager {
      public void shopping(ArrayList<Fruit> lf,
             Hashtable<String, ArrayList<Order>> orderCustomer) {
         boolean productsAvailable = true;
-
+        CheckListFruit(lf);
+        DeleteOutOfFruit(lf);
         //if list empty, customer can't buy
         if (lf.isEmpty()) {
             System.err.println("Out of fruit!!!!");
             return; // Thoát khỏi phương thức và quay lại trang chủ
         }
-        //check if there are fruit that quantity > 0 so the shop can continue buying
+        /*//check if there are fruit that quantity > 0 so the shop can continue buying
         boolean outOfStockinCheck = true;
         for (Fruit fruit : lf) {
             if (fruit.getQuantity() > 0) {
@@ -86,7 +86,7 @@ public class Manager {
                 System.err.println("Out of fruit.");
                 return;
             }
-        }
+        }*/
         ArrayList<Order> lo = new ArrayList<>();
         while (true) {
             //check if store has fruits
@@ -138,10 +138,31 @@ public class Manager {
         }
         displayListOrder(lo);
         String nameCustomer = validation.checkInputString("Enter name: ");
+        //orderCustomer.put(nameCustomer, lo);
+        if (orderCustomer.containsKey(nameCustomer)) {
+        mergeOrders(orderCustomer.get(nameCustomer), lo);
+    } else {
         orderCustomer.put(nameCustomer, lo);
+    }
         System.err.println("Add successful!");
 
     }
+     
+     public void mergeOrders(ArrayList<Order> existingOrders, ArrayList<Order> newOrders) {
+    for (Order newOrder : newOrders) {
+        boolean orderExists = false;
+        for (Order existingOrder : existingOrders) {
+            if (existingOrder.getFruitID().equals(newOrder.getFruitID())) {
+                existingOrder.setQuantity(existingOrder.getQuantity() + newOrder.getQuantity());
+                orderExists = true;
+                break;
+            }
+        }
+        if (!orderExists) {
+            existingOrders.add(newOrder);
+        }
+    }
+}
      
     // check if there are fruits in the shop
     public String CheckListFruit(ArrayList<Fruit> lf){
@@ -159,41 +180,44 @@ public class Manager {
     //display fruits in shop
     public void displayListfruit(ArrayList<Fruit> lf) {
         int countItem = 1;
-        System.out.printf("%-10s%-20s%-20s%-15s\n", "Item", "Fruit name", "Origin", "Price");
+        System.out.printf("%-10s%-20s%-20s%-20s\n", "| ++ Item ++ |",
+                "++ Fruit name ++ |", " ++ Origin ++ |",
+                " ++ Price ++ |", " ++ Quantity ++ |");
         for (Fruit fruit : lf) {
             //check shop have item or not 
             if (fruit.getQuantity() != 0) {
-                System.out.printf("%-10d%-20s%-20s%-15.0f$\n", countItem++,
-                        fruit.getFruitName(), fruit.getOrigin(), fruit.getPrice());
+                System.out.printf("\t%-12s%-17s%-20s%5.0f$\n", countItem++,
+                        fruit.getFruitName(), fruit.getOrigin(),
+                        fruit.getPrice());
             }
         }
     }
     //admin to check the code
 
     public void DeleteOutOfFruit(ArrayList<Fruit> lf) {
-        System.out.println("List of unavailable food: ");
+        //System.out.println("List of unavailable food: ");
         int countItem = 1;
         ArrayList<Fruit> itemsToRemove = new ArrayList<>(); // List of items to remove
-        System.out.printf("%-15s%-10s%-20s%-20s%-15s\n", "ID", "Item", "Fruit name", "Origin", "Price");
+        //System.out.printf("%-15s%-10s%-20s%-20s%-15s\n", "ID", "Item", "Fruit name", "Origin", "Price");
         for (Fruit fruit : lf) {
             if (fruit.getQuantity() == 0) {
-                System.out.printf("%-15s%-10d%-20s%-20s%-15.0f$\n",
+                /*System.out.printf("%-15s%-10d%-20s%-20s%-15.0f$\n",
        fruit.getFruitID(), countItem++, fruit.getFruitName(),
-       fruit.getOrigin(), fruit.getPrice());
+       fruit.getOrigin(), fruit.getPrice());*/
                 itemsToRemove.add(fruit); // Add item to remove list
                 continue; // Skip this item and continue loop
             }
         }
         // Remove out-of-stock items from the main list
         lf.removeAll(itemsToRemove);
-        System.out.println("Remove successed!!");
     }
 
     public void displayListOrder(ArrayList<Order> lo) {
         double total = 0;
-        System.out.printf("%15s%15s%15s%15s\n", "Product", "Quantity", "Price", "Amount");
+        String DISPLAYLISTORDER = "Product | Quantity | Price | Amount";
+        System.out.println(DISPLAYLISTORDER);
         for (Order order : lo) {
-            System.out.printf("%15s%15d%15.0f$%15.0f$\n", order.getFruitName(), order.getQuantity(),
+            System.out.printf("%s%8d%10.0f$%8.0f$\n", order.getFruitName(), order.getQuantity(),
                     order.getPrice(), (order.getPrice() * order.getQuantity()));
             total += order.getPrice() * order.getQuantity();
         }
@@ -220,5 +244,11 @@ public class Manager {
                 return;
             }
         }
+    }
+    
+    public void generateFruit(ArrayList<Fruit> lf){
+        lf.add(new Fruit("1", "banana", 5,150, "Vietnam"));
+        lf.add(new Fruit("2", "apple", 5,150, "Vietnam"));
+        lf.add(new Fruit("3", "mango", 5,150, "Vietnam"));
     }
 }

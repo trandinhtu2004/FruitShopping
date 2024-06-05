@@ -18,6 +18,7 @@ public class Main {
         Hashtable<String, ArrayList<Order>> customerOrder = new Hashtable<>();
         Validation validation = new Validation();
         Manager manager = new Manager();
+        manager.generateFruit(lf);
         while (true){
             int choice = manager.menu();
             switch (choice) {
@@ -25,15 +26,12 @@ public class Main {
                     manager.createFruit(lf);
                     break;
                 case 2:
-                    manager.DeleteOutOfFruit(lf);
-                    break;
-                case 3:
                     manager.viewOrder(customerOrder);
                     break;
-                case 4:
+                case 3:
                     manager.shopping(lf, customerOrder);
                     break;
-                case 5:
+                case 4:
                     return;
                 default:
                     throw new AssertionError();
